@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 
 /**
@@ -88,6 +89,8 @@ public class ArrowTypeComparator
                 return Boolean.compare((boolean) lhs, (boolean) rhs);
             case DATEMILLI:
                 return ((LocalDateTime) lhs).compareTo((LocalDateTime) rhs);
+            case TIMESTAMPMILLI:
+                return ((Timestamp) lhs).compareTo((Timestamp) rhs);    
             case DATEDAY:
                 return ((Integer) lhs).compareTo((Integer) rhs);
             case TIMESTAMPMILLITZ:

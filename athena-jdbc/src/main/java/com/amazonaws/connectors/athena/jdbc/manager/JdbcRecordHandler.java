@@ -33,6 +33,7 @@ import com.amazonaws.athena.connector.lambda.data.writers.extractors.Float4Extra
 import com.amazonaws.athena.connector.lambda.data.writers.extractors.Float8Extractor;
 import com.amazonaws.athena.connector.lambda.data.writers.extractors.IntExtractor;
 import com.amazonaws.athena.connector.lambda.data.writers.extractors.SmallIntExtractor;
+import com.amazonaws.athena.connector.lambda.data.writers.extractors.TimeStampMilliExtractor;
 import com.amazonaws.athena.connector.lambda.data.writers.extractors.TinyIntExtractor;
 import com.amazonaws.athena.connector.lambda.data.writers.extractors.VarBinaryExtractor;
 import com.amazonaws.athena.connector.lambda.data.writers.extractors.VarCharExtractor;
@@ -59,6 +60,7 @@ import org.apache.arrow.vector.holders.NullableFloat4Holder;
 import org.apache.arrow.vector.holders.NullableFloat8Holder;
 import org.apache.arrow.vector.holders.NullableIntHolder;
 import org.apache.arrow.vector.holders.NullableSmallIntHolder;
+import org.apache.arrow.vector.holders.NullableTimeStampMilliHolder;
 import org.apache.arrow.vector.holders.NullableTinyIntHolder;
 import org.apache.arrow.vector.types.Types;
 import org.apache.arrow.vector.types.pojo.Field;
@@ -236,6 +238,14 @@ public abstract class JdbcRecordHandler
                     }
                     dst.isSet = resultSet.wasNull() ? 0 : 1;
                 };
+            case TIMESTAMPMILLI:
+                return (TimeStampMilliExtractor) (Object context, NullableTimeStampMilliHolder dst) ->
+                {
+                    if (resultSet.getTimestamp(fieldName) != null) {
+                        dst.value = resultSet.getTimestamp(fieldName).getTime();
+                    }
+                    dst.isSet = resultSet.wasNull() ? 0 : 1;
+                };    
             case VARCHAR:
                 return (VarCharExtractor) (Object context, NullableVarCharHolder dst) ->
                 {

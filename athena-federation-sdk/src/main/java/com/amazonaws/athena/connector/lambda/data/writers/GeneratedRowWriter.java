@@ -30,6 +30,7 @@ import com.amazonaws.athena.connector.lambda.data.writers.extractors.Float4Extra
 import com.amazonaws.athena.connector.lambda.data.writers.extractors.Float8Extractor;
 import com.amazonaws.athena.connector.lambda.data.writers.extractors.IntExtractor;
 import com.amazonaws.athena.connector.lambda.data.writers.extractors.SmallIntExtractor;
+import com.amazonaws.athena.connector.lambda.data.writers.extractors.TimeStampMilliExtractor;
 import com.amazonaws.athena.connector.lambda.data.writers.extractors.TinyIntExtractor;
 import com.amazonaws.athena.connector.lambda.data.writers.extractors.VarBinaryExtractor;
 import com.amazonaws.athena.connector.lambda.data.writers.extractors.VarCharExtractor;
@@ -44,6 +45,7 @@ import com.amazonaws.athena.connector.lambda.data.writers.fieldwriters.Float4Fie
 import com.amazonaws.athena.connector.lambda.data.writers.fieldwriters.Float8FieldWriter;
 import com.amazonaws.athena.connector.lambda.data.writers.fieldwriters.IntFieldWriter;
 import com.amazonaws.athena.connector.lambda.data.writers.fieldwriters.SmallIntFieldWriter;
+import com.amazonaws.athena.connector.lambda.data.writers.fieldwriters.TimeStampMilliFieldWriter;
 import com.amazonaws.athena.connector.lambda.data.writers.fieldwriters.TinyIntFieldWriter;
 import com.amazonaws.athena.connector.lambda.data.writers.fieldwriters.VarBinaryFieldWriter;
 import com.amazonaws.athena.connector.lambda.data.writers.fieldwriters.VarCharFieldWriter;
@@ -61,6 +63,7 @@ import org.apache.arrow.vector.Float4Vector;
 import org.apache.arrow.vector.Float8Vector;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.SmallIntVector;
+import org.apache.arrow.vector.TimeStampMilliVector;
 import org.apache.arrow.vector.TinyIntVector;
 import org.apache.arrow.vector.VarBinaryVector;
 import org.apache.arrow.vector.VarCharVector;
@@ -159,6 +162,8 @@ public class GeneratedRowWriter
                 return new BigIntFieldWriter((BigIntExtractor) extractor, (BigIntVector) vector, constraint);
             case DATEMILLI:
                 return new DateMilliFieldWriter((DateMilliExtractor) extractor, (DateMilliVector) vector, constraint);
+            case TIMESTAMPMILLI:
+                return new TimeStampMilliFieldWriter((TimeStampMilliExtractor) extractor, (TimeStampMilliVector) vector, constraint);    
             case DATEDAY:
                 return new DateDayFieldWriter((DateDayExtractor) extractor, (DateDayVector) vector, constraint);
             case TINYINT:

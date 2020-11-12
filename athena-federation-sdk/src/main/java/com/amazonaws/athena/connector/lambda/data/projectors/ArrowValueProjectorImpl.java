@@ -64,6 +64,8 @@ public abstract class ArrowValueProjectorImpl
                     long millis = fieldReader.readLocalDateTime().toDateTime(org.joda.time.DateTimeZone.UTC).getMillis();
                     return Instant.ofEpochMilli(millis).atZone(BlockUtils.UTC_ZONE_ID).toLocalDateTime();
                 };
+            case TIMESTAMPMILLI:
+                return (fieldReader) -> fieldReader.readLocalDateTime();
             case TINYINT:
             case UINT1:
                 return (fieldReader) -> fieldReader.readByte();

@@ -34,6 +34,7 @@ import org.apache.arrow.vector.Float8Vector;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.SmallIntVector;
 import org.apache.arrow.vector.TimeStampMilliTZVector;
+import org.apache.arrow.vector.TimeStampMilliVector;
 import org.apache.arrow.vector.TinyIntVector;
 import org.apache.arrow.vector.UInt1Vector;
 import org.apache.arrow.vector.UInt2Vector;
@@ -57,6 +58,7 @@ import org.joda.time.DateTimeZone;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -244,6 +246,14 @@ public class BlockUtils
                         ((TimeStampMilliTZVector) vector).setSafe(pos, (long) value);
                     }
                     break;
+                case TIMESTAMPMILLI:
+                    if (value instanceof Timestamp) {
+                        ((TimeStampMilliVector) vector).setSafe(pos, ((Timestamp) value).getTime());
+                    }
+                    else {
+                        ((TimeStampMilliVector) vector).setSafe(pos, (long) value);
+                    }
+                    break;     
                 case DATEMILLI:
                     if (value instanceof Date) {
                         ((DateMilliVector) vector).setSafe(pos, ((Date) value).getTime());
@@ -415,6 +425,8 @@ public class BlockUtils
                 return String.valueOf(reader.readInteger());
             case TIMESTAMPMILLITZ:
                 return String.valueOf(DateTimeFormatterUtil.constructZonedDateTime(reader.readLong()));
+            case TIMESTAMPMILLI:   
+                return String.valueOf(reader.readLocalDateTime());
             case DATEMILLI:
                 return String.valueOf(reader.readLocalDateTime());
             case FLOAT8:
@@ -651,6 +663,8 @@ public class BlockUtils
         switch (minorType) {
             case TIMESTAMPMILLITZ:
                 return ZonedDateTime.class;
+            case TIMESTAMPMILLI:
+                return Timestamp.class;    
             case DATEMILLI:
                 return LocalDateTime.class;
             case TINYINT:
@@ -730,6 +744,14 @@ public class BlockUtils
                         dateTimeWithZone = (long) value;
                     }
                     writer.writeTimeStampMilliTZ(dateTimeWithZone);
+                case TIMESTAMPMILLI:
+                    if (value instanceof Timestamp) {
+                        writer.writeTimeStampMilli(((Timestamp) value).getTime());
+                    }
+                    else {
+                        writer.writeTimeStampMilli((long) value);
+                    }
+                    break;    
                 case DATEMILLI:
                     if (value instanceof Date) {
                         writer.writeDateMilli(((Date) value).getTime());
@@ -902,6 +924,14 @@ public class BlockUtils
                         dateTimeWithZone = (long) value;
                     }
                     writer.timeStampMilliTZ(field.getName()).writeTimeStampMilliTZ(dateTimeWithZone);
+                case TIMESTAMPMILLI:
+                    if (value instanceof Timestamp) {
+                        writer.timeStampMilli(field.getName()).writeTimeStampMilli(((Timestamp) value).getTime());
+                    }
+                    else {
+                        writer.timeStampMilli(field.getName()).writeTimeStampMilli((long) value);
+                    }
+                    break;    
                 case DATEMILLI:
                     if (value instanceof Date) {
                         writer.dateMilli(field.getName()).writeDateMilli(((Date) value).getTime());
@@ -1043,6 +1073,9 @@ public class BlockUtils
             case TIMESTAMPMILLITZ:
                 ((TimeStampMilliTZVector) vector).setNull(pos);
                 break;
+            case TIMESTAMPMILLI:
+                ((TimeStampMilliVector) vector).setNull(pos);
+                break;    
             case DATEMILLI:
                 ((DateMilliVector) vector).setNull(pos);
                 break;
@@ -1111,6 +1144,9 @@ public class BlockUtils
                 case TIMESTAMPMILLITZ:
                     ((TimeStampMilliTZVector) vector).setNull(row);
                     break;
+                case TIMESTAMPMILLI:
+                    ((TimeStampMilliVector) vector).setNull(row);
+                    break;    
                 case DATEDAY:
                     ((DateDayVector) vector).setNull(row);
                     break;

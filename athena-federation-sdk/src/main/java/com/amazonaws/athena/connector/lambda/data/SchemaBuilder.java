@@ -267,6 +267,18 @@ public class SchemaBuilder
     }
 
     /**
+     * Adds a new TimeStampMilli Field to the Schema as a top-level Field with no children.
+     *
+     * @param fieldName The name of the field to add.
+     * @return This SchemaBuilder itself.
+     */
+    public SchemaBuilder addTimeStampMilliField(String fieldName)
+    {
+        fields.put(fieldName, new Field(fieldName, FieldType.nullable(Types.MinorType.TIMESTAMPMILLI.getType()), null));
+        return this;
+    }
+
+    /**
      * Adds the provided metadata to the Schema.
      *
      * @param key The key of the metadata to add.

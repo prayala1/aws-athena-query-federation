@@ -155,6 +155,10 @@ public abstract class JdbcSplitQueryBuilder
                     LocalDateTime timestamp = ((LocalDateTime) typeAndValue.getValue());
                     statement.setTimestamp(i + 1, new Timestamp(timestamp.toDateTime(DateTimeZone.UTC).getMillis()));
                     break;
+                case TIMESTAMPMILLI:
+                    LocalDateTime timestamp1 = ((LocalDateTime) typeAndValue.getValue());
+                    statement.setTimestamp(i + 1, new Timestamp(timestamp1.toDateTime(DateTimeZone.UTC).getMillis()));
+                    break;    
                 case VARCHAR:
                     statement.setString(i + 1, String.valueOf(typeAndValue.getValue()));
                     break;

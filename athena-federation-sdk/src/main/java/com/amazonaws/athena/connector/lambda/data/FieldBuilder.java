@@ -241,6 +241,18 @@ public class FieldBuilder
         return this;
     }
 
+    /**
+     * Adds a new TimeStampMilli child field with the given name to the builder.
+     *
+     * @param fieldName The name to use for the newly added child field.
+     * @return This FieldBuilder itself.
+     */
+    public FieldBuilder addTimeStampMilliField(String fieldName)
+    {
+        this.children.put(fieldName, new Field(fieldName, FieldType.nullable(Types.MinorType.TIMESTAMPMILLI.getType()), null));
+        return this;
+    }
+
     public Field getChild(String fieldName)
     {
         return children.get(fieldName);
