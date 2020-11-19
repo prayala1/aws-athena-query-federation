@@ -217,7 +217,6 @@ public abstract class JdbcMetadataHandler
                     partitionSchema.getFields().stream().map(Field::getName).collect(Collectors.toSet()));
         }
         catch (SQLException sqlException) {
-            LOGGER.info("Unable to get the table description");
             throw new RuntimeException(sqlException.getErrorCode() + ": " + sqlException.getMessage());
         }
     }
@@ -236,7 +235,7 @@ public abstract class JdbcMetadataHandler
                         resultSet.getInt("DECIMAL_DIGITS"));
                 String columnName = resultSet.getString("COLUMN_NAME");
                 if (columnType != null && SupportedTypes.isSupported(columnType)) {
-                    LOGGER.info("supported column type found", columnName, columnType.getTypeID());
+                    LOGGER.info("Supported column name: {} and column type: {}", columnName, columnType.getTypeID());
                     schemaBuilder.addField(FieldBuilder.newBuilder(columnName, columnType).build());
                     found = true;
                 }
@@ -251,8 +250,6 @@ public abstract class JdbcMetadataHandler
 
             // add partition columns
             partitionSchema.getFields().forEach(schemaBuilder::addField);
-
-            LOGGER.info("Ready to build the schema");
 
             return schemaBuilder.build();
         }
